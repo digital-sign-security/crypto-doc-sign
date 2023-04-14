@@ -1,0 +1,11 @@
+version: 3.9
+
+services:
+  be:
+    title: be
+  fe: 
+    title: be
+  db:
+    title: db
+  nginx:
+    title: nginx

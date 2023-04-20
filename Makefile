@@ -1,3 +1,5 @@
+.SILENT:
+
 run-be:
 	go build backend && go run backend
 
@@ -9,3 +11,9 @@ run-fe:
 
 build-fe:
 	npm build
+
+swagger-init:
+	swag init -g backend/cmd/backend/main.go
+
+complex-run: swagger
+	docker-compose up -d --build

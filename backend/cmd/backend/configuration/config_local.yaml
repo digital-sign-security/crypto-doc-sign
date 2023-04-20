@@ -1,0 +1,8 @@
+swagger:
+  title: "crypto-doc-sign-BE API"
+  version: "1.0"
+  base-path: "/v1"
+  host: "localhost:5555"
+  schemes:
+    - "http"
+    - "https"

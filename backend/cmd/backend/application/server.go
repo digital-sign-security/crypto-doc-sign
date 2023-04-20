@@ -4,6 +4,7 @@ import (
 	"github.com/crypto-sign/internal/handlers"
 	"github.com/crypto-sign/internal/middleware"
 	"github.com/go-chi/chi/v5"
+	httpSwagger "github.com/swaggo/http-swagger"
 	"net/http"
 )
 
@@ -11,6 +12,7 @@ func (a *App) NewHTTPServer(env *env) *http.Server {
 	mux := chi.NewMux()
 	mux.Use(middleware.SignatureChecker)
 
+	mux.Get("/swagger", httpSwagger.WrapHandler)
 	mux.Route("/v1", func(r chi.Router) {
 		a.addDocsHandler(env, r)
 		a.addKeysHandler(env, r)

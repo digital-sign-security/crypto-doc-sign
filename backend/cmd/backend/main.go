@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"github.com/crypto-sign/cmd/backend/application"
 	"github.com/crypto-sign/cmd/backend/configuration"
 	"github.com/crypto-sign/docs"
@@ -10,18 +11,14 @@ import (
 	"os"
 )
 
-// @title chi-swagger example APIs
-// @version 1.0
-// @description chi-swagger example APIs
-// @BasePath
 func main() {
-	//ctx := context.Background()
+	_ = context.Background()
 
 	cfg := &configuration.Config{}
 
-	//if err := configuration.InitConfig(); err != nil {
-	//	logrus.Fatalf("error initializing config: %s", err.Error())
-	//}
+	if err := configuration.InitConfig(); err != nil {
+		logrus.Fatalf("error initializing config: %s", err.Error())
+	}
 	configureSwaggerInfo()
 
 	logger := configureLogger()

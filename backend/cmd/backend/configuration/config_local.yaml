@@ -1,3 +1,6 @@
+server:
+  port: 5555
+
 swagger:
   title: "crypto-doc-sign-BE API"
   version: "1.0"

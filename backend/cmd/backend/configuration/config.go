@@ -6,7 +6,8 @@ type Config struct {
 }
 
 func InitConfig() error {
-	viper.AddConfigPath(".")
-	viper.SetConfigName("config_local.yaml")
+	viper.SetConfigName("config_local")
+	viper.SetConfigType("yaml")
+	viper.AddConfigPath("cmd/backend/configuration/")
 	return viper.ReadInConfig()
 }

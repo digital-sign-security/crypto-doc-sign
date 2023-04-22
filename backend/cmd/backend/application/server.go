@@ -1,9 +1,11 @@
 package application
 
 import (
+	"fmt"
 	"github.com/crypto-sign/internal/handlers"
 	"github.com/crypto-sign/internal/middleware"
 	"github.com/go-chi/chi/v5"
+	"github.com/spf13/viper"
 	httpSwagger "github.com/swaggo/http-swagger"
 	"net/http"
 )
@@ -19,7 +21,7 @@ func (a *App) NewHTTPServer(env *env) *http.Server {
 	})
 
 	return &http.Server{
-		Addr:    "localhost:5555",
+		Addr:    fmt.Sprintf(":%d", viper.GetInt("server.port")),
 		Handler: mux,
 	}
 }
@@ -43,6 +45,6 @@ func (a *App) addKeysHandler(env *env, rg chi.Router) {
 		r.Get("/public/{user_id}", handler.GetAnotherUserPublicKey)
 		r.Get("/public/server", handler.GetServerPublicKey)
 
-		r.Get("/", handler.GetKeys)
+		r.Get("/", handler.GetGeneratedKeys)
 	})
 }

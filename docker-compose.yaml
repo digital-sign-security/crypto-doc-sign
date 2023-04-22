@@ -3,22 +3,24 @@ version: "3.9"
 services:
   be:
     container_name: "backend"
-    build: .
-    command: ./auth-app
+    build:
+      context: backend
+      dockerfile: ./Dockerfile
+    command: ./backend
     restart: always
     networks:
       - new
-    env_file:
-      - .env
+#    env_file:
+#      - .env
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres
-      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_PASSWORD=postgres
     ports:
-      - "8008:8008"
+      - "5555:5555"
     depends_on:
       - db
     volumes:
-      - .:/app
+      - .:/backend
   db:
     image: postgres:15-alpine
     container_name: "db"
@@ -26,17 +28,17 @@ services:
       new:
         aliases:
           - database
-    env_file:
-      - .env
+#    env_file:
+#      - .env
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_NAME=postgres
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_PASSWORD=postgres
     ports:
-      - "5436:5432"
+      - "5438:5432"
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -d qtr_portal -U qtr_portal" ]
       interval: 5s

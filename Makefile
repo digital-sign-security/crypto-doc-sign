@@ -15,5 +15,5 @@ build-fe:
 swagger:
 	cd backend && swag init -d "./" -g "cmd/backend/main.go"
 
-complex-run: swagger
+run: swagger
 	docker-compose up -d --build

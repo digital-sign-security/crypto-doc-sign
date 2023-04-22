@@ -12,7 +12,7 @@ func (a *App) NewHTTPServer(env *env) *http.Server {
 	mux := chi.NewMux()
 	mux.Use(middleware.SignatureChecker)
 
-	mux.Get("/swagger", httpSwagger.WrapHandler)
+	mux.Mount("/swagger", httpSwagger.WrapHandler)
 	mux.Route("/v1", func(r chi.Router) {
 		a.addDocsHandler(env, r)
 		a.addKeysHandler(env, r)

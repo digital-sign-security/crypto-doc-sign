@@ -13,7 +13,7 @@ build-fe:
 	npm build
 
 swagger-init:
-	swag init -g backend/cmd/backend/main.go
+	cd backend && swag init -g /cmd/backend/main.go
 
 complex-run: swagger
 	docker-compose up -d --build

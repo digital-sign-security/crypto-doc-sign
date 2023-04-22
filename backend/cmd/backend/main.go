@@ -10,6 +10,10 @@ import (
 	"os"
 )
 
+// @title chi-swagger example APIs
+// @version 1.0
+// @description chi-swagger example APIs
+// @BasePath
 func main() {
 	//ctx := context.Background()
 

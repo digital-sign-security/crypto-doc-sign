@@ -12,7 +12,7 @@ run-fe:
 build-fe:
 	npm build
 
-swagger-init:
+swagger:
 	cd backend && swag init -d "./" -g "cmd/backend/main.go"
 
 complex-run: swagger

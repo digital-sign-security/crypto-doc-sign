@@ -24,13 +24,11 @@ func main() {
 	logger := configureLogger()
 
 	app := application.New(cfg, logger)
-	app.Run()
-	logger.Info("application stopped")
-	//if err = app.Run(); err != nil {
-	//	logger.Fatal("application stopped with error")
-	//} else {
-	//	logger.Info("application stopped")
-	//}
+	if err := app.Run(); err != nil {
+		logger.Fatal("application stopped with error")
+	} else {
+		logger.Info("application stopped")
+	}
 
 }
 

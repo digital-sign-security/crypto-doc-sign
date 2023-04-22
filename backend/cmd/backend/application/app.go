@@ -24,7 +24,7 @@ func New(cfg *configuration.Config, logger *logrus.Logger) *App {
 	}
 }
 
-func (a *App) Run() {
+func (a *App) Run() error {
 	envStructure := a.constructEnv()
 
 	httpServer := a.NewHTTPServer(envStructure)
@@ -60,10 +60,12 @@ func (a *App) Run() {
 	err := httpServer.ListenAndServe()
 	if err != nil && err != http.ErrServerClosed {
 		a.Logger.Fatal(err)
+		return err
 	}
 
 	// Wait for server context to be stopped
 	<-serverCtx.Done()
+	return nil
 }
 
 type env struct {

@@ -49,8 +49,8 @@ services:
     networks:
       - new
     volumes:
-      - .:/migrations
-    command: [ "-path", "/migrations", "-database",  "postgres://postgres:postgres@db:5432/postgres?sslmode=disable", "up" ]
+      - .:/backend/migrations
+    command: [ "-path", "/backend/migrations", "-database",  "postgres://postgres:postgres@db:5432/postgres?sslmode=disable", "up" ]
     links:
       - db
     depends_on:

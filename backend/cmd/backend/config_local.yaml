@@ -18,6 +18,7 @@ storage:
   database: postgres
   username: postgres
   password: postgres
+  connection_attempts: 3
 
 logger:
   formatter: json

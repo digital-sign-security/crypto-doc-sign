@@ -30,7 +30,7 @@ func (a *App) Run() error {
 
 	httpServer := a.NewHTTPServer(envStructure)
 
-	postgresClient, err := clients.NewClient(context.TODO(), 3, a.Config.Storage, a.Logger)
+	postgresClient, err := clients.NewClient(context.TODO(), a.Config.Storage, a.Logger)
 	if err != nil {
 		a.Logger.Fatal(err)
 		return err

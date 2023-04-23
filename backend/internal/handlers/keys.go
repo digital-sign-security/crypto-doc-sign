@@ -54,28 +54,9 @@ func (h *KeysHandler) Post(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Get keys
-// @Summary get your public key
-// @Description  get your public
-// @Tags         keys
-// @Accept       json
-// @Produce      json
-//
-//	@Success      200         {string}  string "OK"
-//	@Failure      400         {string}  string  "Bad Request"
-//	@Failure      500         {string}  string  "Internal Server Error"
-//
-// @Router       /keys/public [get]
-func (h *KeysHandler) Get(w http.ResponseWriter, r *http.Request) {
-	_, err := w.Write([]byte(fmt.Sprintf("%v", r.URL)))
-	if err != nil {
-		return
-	}
-}
-
-// GetAnotherUserPublicKey
-// @Summary get another user public key
-// @Description  get another user public key
+// GetUserPublicKey
+// @Summary get user public key by user_id
+// @Description  get user public key bu user_id
 // @Tags         keys
 // @Accept       json
 // @Produce      json
@@ -86,26 +67,7 @@ func (h *KeysHandler) Get(w http.ResponseWriter, r *http.Request) {
 //	@Failure      500         {string}  string  "Internal Server Error"
 //
 // @Router       /keys/public/{user_id} [get]
-func (h *KeysHandler) GetAnotherUserPublicKey(w http.ResponseWriter, r *http.Request) {
-	_, err := w.Write([]byte(fmt.Sprintf("%v", r.URL)))
-	if err != nil {
-		return
-	}
-}
-
-// GetServerPublicKey
-// @Summary get server public key
-// @Description  get server public key
-// @Tags         keys
-// @Accept       json
-// @Produce      json
-//
-//	@Success      200         {string}  string "OK"
-//	@Failure      400         {string}  string  "Bad Request"
-//	@Failure      500         {string}  string  "Internal Server Error"
-//
-// @Router       /keys/public/server [get]
-func (h *KeysHandler) GetServerPublicKey(w http.ResponseWriter, r *http.Request) {
+func (h *KeysHandler) GetUserPublicKey(w http.ResponseWriter, r *http.Request) {
 	_, err := w.Write([]byte(fmt.Sprintf("%v", r.URL)))
 	if err != nil {
 		return

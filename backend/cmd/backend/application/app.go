@@ -3,6 +3,7 @@ package application
 import (
 	"context"
 	"github.com/crypto-sign/cmd/backend/configuration"
+	"github.com/crypto-sign/internal/clients"
 	"github.com/crypto-sign/internal/services"
 	"github.com/sirupsen/logrus"
 	"net/http"
@@ -28,6 +29,13 @@ func (a *App) Run() error {
 	envStructure := a.constructEnv()
 
 	httpServer := a.NewHTTPServer(envStructure)
+
+	postgresClient, err := clients.NewClient(context.TODO(), 3, a.Config.Storage, a.Logger)
+	if err != nil {
+		a.Logger.Fatal(err)
+		return err
+	}
+	a.Logger.Infof("%v", postgresClient)
 
 	// Server run context
 	serverCtx, serverStopCtx := context.WithCancel(context.Background())
@@ -56,8 +64,9 @@ func (a *App) Run() error {
 		serverStopCtx()
 	}()
 
+	a.Logger.Info("server was started successfully")
 	// Run the server
-	err := httpServer.ListenAndServe()
+	err = httpServer.ListenAndServe()
 	if err != nil && err != http.ErrServerClosed {
 		a.Logger.Fatal(err)
 		return err

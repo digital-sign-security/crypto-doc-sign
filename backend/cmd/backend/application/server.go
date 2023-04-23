@@ -5,9 +5,9 @@ import (
 	"github.com/crypto-sign/internal/handlers"
 	"github.com/crypto-sign/internal/middleware"
 	"github.com/go-chi/chi/v5"
-	"github.com/spf13/viper"
 	httpSwagger "github.com/swaggo/http-swagger"
 	"net/http"
+	"time"
 )
 
 func (a *App) NewHTTPServer(env *env) *http.Server {
@@ -21,8 +21,11 @@ func (a *App) NewHTTPServer(env *env) *http.Server {
 	})
 
 	return &http.Server{
-		Addr:    fmt.Sprintf(":%d", viper.GetInt("server.port")),
-		Handler: mux,
+		Addr:           fmt.Sprintf(":%d", a.Config.Server.Port),
+		Handler:        mux,
+		MaxHeaderBytes: 1 << 20, // 1 MB
+		ReadTimeout:    10 * time.Second,
+		WriteTimeout:   10 * time.Second,
 	}
 }
 

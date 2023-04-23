@@ -6,7 +6,6 @@ import (
 	"github.com/crypto-sign/cmd/backend/configuration"
 	"github.com/crypto-sign/docs"
 	"github.com/sirupsen/logrus"
-	"github.com/spf13/viper"
 	"log"
 	"os"
 )
@@ -14,14 +13,14 @@ import (
 func main() {
 	_ = context.Background()
 
-	cfg := &configuration.Config{}
-
-	if err := configuration.InitConfig(); err != nil {
-		logrus.Fatalf("error initializing config: %s", err.Error())
-	}
-	configureSwaggerInfo()
-
 	logger := configureLogger()
+
+	cfg, err := configuration.GetConfig(logger)
+	if err != nil {
+		logger.Fatalf("cannot read config: %v", err)
+		return
+	}
+	configureSwaggerInfo(cfg)
 
 	app := application.New(cfg, logger)
 	if err := app.Run(); err != nil {
@@ -40,10 +39,10 @@ func configureLogger() *logrus.Logger {
 	return logger
 }
 
-func configureSwaggerInfo() {
-	docs.SwaggerInfo.Title = viper.GetString("swagger.title")
-	docs.SwaggerInfo.Version = viper.GetString("swagger.version")
-	docs.SwaggerInfo.BasePath = viper.GetString("swagger.base-path")
-	docs.SwaggerInfo.Host = viper.GetString("swagger.host")
-	docs.SwaggerInfo.Schemes = viper.GetStringSlice("swagger.schemes")
+func configureSwaggerInfo(cfg *configuration.Config) {
+	docs.SwaggerInfo.Title = cfg.Swagger.Title
+	docs.SwaggerInfo.Version = cfg.Swagger.Version
+	docs.SwaggerInfo.BasePath = cfg.Swagger.BasePath
+	docs.SwaggerInfo.Host = cfg.Swagger.Host
+	docs.SwaggerInfo.Schemes = cfg.Swagger.Schemes
 }

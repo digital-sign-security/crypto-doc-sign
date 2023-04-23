@@ -1,5 +1,7 @@
+is_debug: true
 server:
   port: 5555
+
 
 swagger:
   title: "crypto-doc-sign-BE API"
@@ -9,3 +11,14 @@ swagger:
   schemes:
     - "http"
     - "https"
+
+storage:
+  host: db
+  port: 5432
+  database: postgres
+  username: postgres
+  password: postgres
+
+logger:
+  formatter: json
+  out: stdout

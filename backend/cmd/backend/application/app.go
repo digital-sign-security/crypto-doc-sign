@@ -78,13 +78,15 @@ func (a *App) Run() error {
 }
 
 type env struct {
-	keyService *services.KeyService
-	docService *services.DocService
+	keyService  *services.KeyService
+	docService  *services.DocService
+	userService *services.UserService
 }
 
 func (a *App) constructEnv() *env {
 	return &env{
-		keyService: services.NewKeyService(a.Logger),
-		docService: services.NewDocService(a.Logger),
+		keyService:  services.NewKeyService(a.Logger),
+		docService:  services.NewDocService(a.Logger),
+		userService: services.NewUserService(a.Logger),
 	}
 }

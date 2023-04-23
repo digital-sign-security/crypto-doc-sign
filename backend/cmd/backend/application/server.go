@@ -33,7 +33,7 @@ func (a *App) addDocsHandler(env *env, rg chi.Router) {
 	handler := handlers.NewDocsHandler(env.docService)
 
 	rg.Route("/docs", func(r chi.Router) {
-		r.Post("/", handler.Create) // one handler for two modes
+		r.Post("/", handler.Create)
 		r.Get("/available", handler.GetAvailable)
 		r.Get("/{doc_id}", handler.Get)
 	})
@@ -43,11 +43,21 @@ func (a *App) addKeysHandler(env *env, rg chi.Router) {
 	handler := handlers.NewKeysHandler(env.keyService)
 
 	rg.Route("/keys", func(r chi.Router) {
-		r.Post("/public", handler.Post)
-		r.Get("/public", handler.Get)
-		r.Get("/public/{user_id}", handler.GetAnotherUserPublicKey)
-		r.Get("/public/server", handler.GetServerPublicKey)
-
 		r.Get("/", handler.GetGeneratedKeys)
+
+		r.Post("/public", handler.Post)
+		r.Get("/public/{user_id}", handler.GetUserPublicKey)
+	})
+}
+
+func (a *App) addUsersHandler(env *env, rg chi.Router) {
+	handler := handlers.NewUsersHandler(env.userService)
+
+	rg.Route("/users", func(r chi.Router) {
+		r.Get("/", handler.GetListOfUsers)
+
+		r.Post("/sign-up", handler.SignUp)
+		r.Post("/sign-in", handler.SignIn)
+		r.Post("/sign-out", handler.SignOut)
 	})
 }

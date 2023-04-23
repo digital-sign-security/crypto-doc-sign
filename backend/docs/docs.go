@@ -166,39 +166,6 @@ const docTemplate = `{
             }
         },
         "/keys/public": {
-            "get": {
-                "description": "get your public",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "keys"
-                ],
-                "summary": "get your public key",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
             "post": {
                 "description": "post your public key in the system",
                 "consumes": [
@@ -233,9 +200,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/keys/public/server": {
+        "/keys/public/{user_id}": {
             "get": {
-                "description": "get server public key",
+                "description": "get user public key bu user_id",
                 "consumes": [
                     "application/json"
                 ],
@@ -245,7 +212,16 @@ const docTemplate = `{
                 "tags": [
                     "keys"
                 ],
-                "summary": "get server public key",
+                "summary": "get user public key by user_id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The unique user_id of a User",
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -268,9 +244,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/keys/public/{user_id}": {
+        "/users": {
             "get": {
-                "description": "get another user public key",
+                "description": "get all users",
                 "consumes": [
                     "application/json"
                 ],
@@ -278,18 +254,114 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "keys"
+                    "users"
                 ],
-                "summary": "get another user public key",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "The unique user_id of a User",
-                        "name": "user_id",
-                        "in": "path",
-                        "required": true
+                "summary": "get all users",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
                     }
+                }
+            }
+        },
+        "/users/sign-in": {
+            "post": {
+                "description": "user sign in",
+                "consumes": [
+                    "application/json"
                 ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "user sign in",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/sign-out": {
+            "post": {
+                "description": "user sign out",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "user sign out",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/sign-up": {
+            "post": {
+                "description": "user sign up",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "user sign up",
                 "responses": {
                     "200": {
                         "description": "OK",

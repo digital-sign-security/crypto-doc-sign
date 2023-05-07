@@ -1,0 +1,48 @@
+.form {
+    background: #FFFFFF;
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.08), 0px 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 28px;
+    height: auto;
+    padding: 32px;
+}
+
+.form__field {
+    display: block;
+    width: 300px;
+    height: 50px;
+    background: #fae6f9;
+    border: 1px solid rgba(128, 128, 128, 0.2);
+    border-radius: 6px;
+    box-sizing: border-box;
+    padding-left: 16px;
+    margin-bottom: 10px;
+}
+
+.form__field:focus {   
+    outline-color: #ff00f7;
+    outline-width: 2px;
+}
+
+.required {
+    color: #FF5631;
+}
+
+.form__invalid-field {
+    border-color: #FF5631;
+    border-width: 2px;
+}
+
+.form__valid-field {
+    border-color: green;
+}
+
+.form__tip {
+    padding-bottom: 4px;
+    font-weight: 500;
+    font-size: 16px;
+    color: #FF5631;
+}
+
+.form__question {
+    margin-bottom: 168px;
+}

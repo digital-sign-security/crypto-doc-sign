@@ -12,6 +12,15 @@ type UserService struct {
 	logger *logrus.Logger
 }
 
+type SignUpRequest struct {
+}
+
+type SignInRequest struct {
+}
+
+type SignOutRequest struct {
+}
+
 func NewUserService(logger *logrus.Logger) *UserService {
 	return &UserService{
 		logger: logger,
@@ -26,7 +35,7 @@ func (u *UserService) GetListOfUsers() ([]*domains.User, error) {
 	return users, nil
 }
 
-func (u *UserService) SignUp() (*domains.User, error) {
+func (u *UserService) SignUp(request SignUpRequest) (*domains.User, error) {
 	user, err := u.repo.CreateUser()
 	if err != nil {
 		return nil, fmt.Errorf("create user: %w", err)
@@ -36,7 +45,7 @@ func (u *UserService) SignUp() (*domains.User, error) {
 	return user, nil
 }
 
-func (u *UserService) SignIn() (*domains.User, error) {
+func (u *UserService) SignIn(request SignInRequest) (*domains.User, error) {
 	user, err := u.repo.GetUser()
 	if err != nil {
 		return nil, fmt.Errorf("get user: %w", err)
@@ -46,7 +55,7 @@ func (u *UserService) SignIn() (*domains.User, error) {
 	return user, nil
 }
 
-func (u *UserService) SignOut() error {
+func (u *UserService) SignOut(request SignOutRequest) error {
 	_, err := u.repo.PatchUser()
 	if err != nil {
 		return fmt.Errorf("patch user: %w", err)

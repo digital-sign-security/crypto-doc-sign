@@ -101,7 +101,8 @@ func (h *UsersHandler) GetListOfUsers(w http.ResponseWriter, r *http.Request) {
 // @Router       /users/sign-up [post]
 func (h *UsersHandler) SignUp(w http.ResponseWriter, r *http.Request) {
 	handle := func() (*UserResponse, error) {
-		user, err := h.service.SignUp()
+		request := services.SignUpRequest{}
+		user, err := h.service.SignUp(request)
 		if err != nil {
 			return nil, fmt.Errorf("sign up: %w", err)
 		}
@@ -139,7 +140,8 @@ func (h *UsersHandler) SignUp(w http.ResponseWriter, r *http.Request) {
 // @Router       /users/sign-in [post]
 func (h *UsersHandler) SignIn(w http.ResponseWriter, r *http.Request) {
 	handle := func() (*UserResponse, error) {
-		user, err := h.service.SignIn()
+		request := services.SignInRequest{}
+		user, err := h.service.SignIn(request)
 		if err != nil {
 			return nil, fmt.Errorf("sign in: %w", err)
 		}
@@ -177,7 +179,8 @@ func (h *UsersHandler) SignIn(w http.ResponseWriter, r *http.Request) {
 // @Router       /users/sign-out [post]
 func (h *UsersHandler) SignOut(w http.ResponseWriter, r *http.Request) {
 	handle := func() error {
-		err := h.service.SignOut()
+		request := services.SignOutRequest{}
+		err := h.service.SignOut(request)
 		if err != nil {
 			return fmt.Errorf("sign out: %w", err)
 		}

@@ -13,12 +13,19 @@ type UserService struct {
 }
 
 type SignUpRequest struct {
+	Username string
+	Email    string
+	Password string
 }
 
 type SignInRequest struct {
+	Username string
+	Password string
 }
 
 type SignOutRequest struct {
+	Username string
+	JWTToken string
 }
 
 func NewUserService(logger *logrus.Logger) *UserService {

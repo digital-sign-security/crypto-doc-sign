@@ -1,3 +1,61 @@
+definitions:
+  handlers.UserResponse:
+    properties:
+      email:
+        type: string
+      username:
+        type: string
+    type: object
+  handlers.UserSignInResponse:
+    properties:
+      email:
+        type: string
+      token:
+        type: string
+      username:
+        type: string
+    type: object
+  handlers.UserSignUpResponse:
+    properties:
+      email:
+        type: string
+      token:
+        type: string
+      username:
+        type: string
+    type: object
+  handlers.UsersListResponse:
+    properties:
+      amount:
+        type: integer
+      items:
+        items:
+          $ref: '#/definitions/handlers.UserResponse'
+        type: array
+    type: object
+  services.SignInRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  services.SignOutRequest:
+    properties:
+      jwttoken:
+        type: string
+      username:
+        type: string
+    type: object
+  services.SignUpRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    type: object
 info:
   contact: {}
 paths:
@@ -162,7 +220,7 @@ paths:
         "200":
           description: OK
           schema:
-            type: string
+            $ref: '#/definitions/handlers.UsersListResponse'
         "400":
           description: Bad Request
           schema:
@@ -179,13 +237,20 @@ paths:
       consumes:
       - application/json
       description: user sign in
+      parameters:
+      - description: auth params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/services.SignInRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            type: string
+            $ref: '#/definitions/handlers.UserSignInResponse'
         "400":
           description: Bad Request
           schema:
@@ -202,6 +267,13 @@ paths:
       consumes:
       - application/json
       description: user sign out
+      parameters:
+      - description: auth params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/services.SignOutRequest'
       produces:
       - application/json
       responses:
@@ -225,13 +297,20 @@ paths:
       consumes:
       - application/json
       description: user sign up
+      parameters:
+      - description: auth params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/services.SignUpRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            type: string
+            $ref: '#/definitions/handlers.UserSignUpResponse'
         "400":
           description: Bad Request
           schema:

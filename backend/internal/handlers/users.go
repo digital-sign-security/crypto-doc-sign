@@ -14,7 +14,6 @@ type UsersHandler struct {
 type UserResponse struct {
 	Username string `json:"username"`
 	Email    string `json:"email"`
-	Token    string `json:"token"`
 }
 
 type UserSignUpResponse struct {
@@ -47,7 +46,7 @@ func NewUsersHandler(service *services.UserService) *UsersHandler {
 // @Accept       json
 // @Produce      json
 //
-//	@Success      200         {string}  string "OK"
+//	@Success      200         {object}  UsersListResponse
 //	@Failure      400         {string}  string  "Bad Request"
 //	@Failure      500         {string}  string  "Internal Server Error"
 //
@@ -93,8 +92,9 @@ func (h *UsersHandler) GetListOfUsers(w http.ResponseWriter, r *http.Request) {
 // @Tags         users
 // @Accept       json
 // @Produce      json
+// @Param request body services.SignUpRequest true "auth params"
 //
-//	@Success      200         {string}  string "OK"
+//	@Success      200         {object}  UserSignUpResponse
 //	@Failure      400         {string}  string  "Bad Request"
 //	@Failure      500         {string}  string  "Internal Server Error"
 //
@@ -110,7 +110,6 @@ func (h *UsersHandler) SignUp(w http.ResponseWriter, r *http.Request) {
 		return &UserResponse{
 			Username: user.Username,
 			Email:    user.Email,
-			Token:    "",
 		}, nil
 	}
 
@@ -132,8 +131,9 @@ func (h *UsersHandler) SignUp(w http.ResponseWriter, r *http.Request) {
 // @Tags         users
 // @Accept       json
 // @Produce      json
+// @Param request body services.SignInRequest true "auth params"
 //
-//	@Success      200         {string}  string "OK"
+//	@Success      200         {object}  UserSignInResponse
 //	@Failure      400         {string}  string  "Bad Request"
 //	@Failure      500         {string}  string  "Internal Server Error"
 //
@@ -149,7 +149,6 @@ func (h *UsersHandler) SignIn(w http.ResponseWriter, r *http.Request) {
 		return &UserResponse{
 			Username: user.Username,
 			Email:    user.Email,
-			Token:    "",
 		}, nil
 	}
 
@@ -171,6 +170,7 @@ func (h *UsersHandler) SignIn(w http.ResponseWriter, r *http.Request) {
 // @Tags         users
 // @Accept       json
 // @Produce      json
+// @Param request body services.SignOutRequest true "auth params"
 //
 //	@Success      200         {string}  string "OK"
 //	@Failure      400         {string}  string  "Bad Request"

@@ -1,3 +1,111 @@
+definitions:
+  handlers.AvailableDocumentsResponse:
+    properties:
+      amount:
+        type: integer
+      items:
+        items:
+          $ref: '#/definitions/handlers.DocumentItemResponse'
+        type: array
+    type: object
+  handlers.DocumentItemResponse:
+    properties:
+      Theme:
+        type: string
+      recipient_id:
+        type: string
+      sender_id:
+        type: string
+    type: object
+  handlers.DocumentResponse:
+    properties:
+      Theme:
+        type: string
+      decrypted_text:
+        type: string
+      hash:
+        type: string
+      recipient_id:
+        type: string
+      sender_id:
+        type: string
+    type: object
+  handlers.KeysResponse:
+    properties:
+      private_key:
+        type: string
+      public_key:
+        type: string
+    type: object
+  handlers.PublicKeyResponse:
+    properties:
+      public_key:
+        type: string
+    type: object
+  handlers.UserResponse:
+    properties:
+      email:
+        type: string
+      username:
+        type: string
+    type: object
+  handlers.UserSignInResponse:
+    properties:
+      email:
+        type: string
+      token:
+        type: string
+      username:
+        type: string
+    type: object
+  handlers.UserSignUpResponse:
+    properties:
+      email:
+        type: string
+      token:
+        type: string
+      username:
+        type: string
+    type: object
+  handlers.UsersListResponse:
+    properties:
+      amount:
+        type: integer
+      items:
+        items:
+          $ref: '#/definitions/handlers.UserResponse'
+        type: array
+    type: object
+  services.CreateDocumentMessageRequest:
+    type: object
+  services.PublicKeyCreationRequest:
+    properties:
+      public_key:
+        type: string
+    type: object
+  services.SignInRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  services.SignOutRequest:
+    properties:
+      jwttoken:
+        type: string
+      username:
+        type: string
+    type: object
+  services.SignUpRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    type: object
 info:
   contact: {}
 paths:
@@ -6,6 +114,13 @@ paths:
       consumes:
       - application/json
       description: create decrypted doc with signature
+      parameters:
+      - description: document message creation
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/services.CreateDocumentMessageRequest'
       produces:
       - application/json
       responses:
@@ -41,7 +156,7 @@ paths:
         "200":
           description: OK
           schema:
-            type: string
+            $ref: '#/definitions/handlers.DocumentResponse'
         "400":
           description: Bad Request
           schema:
@@ -54,7 +169,7 @@ paths:
       tags:
       - docs
   /docs/available:
-    post:
+    get:
       consumes:
       - application/json
       description: get available docs for user
@@ -64,7 +179,7 @@ paths:
         "200":
           description: OK
           schema:
-            type: string
+            $ref: '#/definitions/handlers.AvailableDocumentsResponse'
         "400":
           description: Bad Request
           schema:
@@ -87,7 +202,7 @@ paths:
         "200":
           description: OK
           schema:
-            type: string
+            $ref: '#/definitions/handlers.KeysResponse'
         "400":
           description: Bad Request
           schema:
@@ -104,11 +219,18 @@ paths:
       consumes:
       - application/json
       description: post your public key in the system
+      parameters:
+      - description: public key from user
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/services.PublicKeyCreationRequest'
       produces:
       - application/json
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Created
           schema:
             type: string
         "400":
@@ -126,7 +248,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: get user public key bu user_id
+      description: get user public key by user_id
       parameters:
       - description: The unique user_id of a User
         in: path
@@ -139,7 +261,7 @@ paths:
         "200":
           description: OK
           schema:
-            type: string
+            $ref: '#/definitions/handlers.PublicKeyResponse'
         "400":
           description: Bad Request
           schema:
@@ -162,7 +284,7 @@ paths:
         "200":
           description: OK
           schema:
-            type: string
+            $ref: '#/definitions/handlers.UsersListResponse'
         "400":
           description: Bad Request
           schema:
@@ -179,13 +301,20 @@ paths:
       consumes:
       - application/json
       description: user sign in
+      parameters:
+      - description: auth params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/services.SignInRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            type: string
+            $ref: '#/definitions/handlers.UserSignInResponse'
         "400":
           description: Bad Request
           schema:
@@ -202,6 +331,13 @@ paths:
       consumes:
       - application/json
       description: user sign out
+      parameters:
+      - description: auth params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/services.SignOutRequest'
       produces:
       - application/json
       responses:
@@ -225,13 +361,20 @@ paths:
       consumes:
       - application/json
       description: user sign up
+      parameters:
+      - description: auth params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/services.SignUpRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            type: string
+            $ref: '#/definitions/handlers.UserSignUpResponse'
         "400":
           description: Bad Request
           schema:

@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/crypto-sign/cmd/backend/configuration"
 	"github.com/crypto-sign/internal/clients"
+	"github.com/crypto-sign/internal/generators"
 	"github.com/crypto-sign/internal/services"
 	"github.com/sirupsen/logrus"
 	"net/http"
@@ -84,8 +85,10 @@ type env struct {
 }
 
 func (a *App) constructEnv() *env {
+	generator := generators.NewKeysGenerator(a.Config.Generator)
+
 	return &env{
-		keyService:  services.NewKeyService(a.Logger),
+		keyService:  services.NewKeyService(a.Logger, generator),
 		docService:  services.NewDocService(a.Logger),
 		userService: services.NewUserService(a.Logger),
 	}

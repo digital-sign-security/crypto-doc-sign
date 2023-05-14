@@ -12,25 +12,31 @@ type Config struct {
 		BindIP string `yaml:"bind_ip" env-default:"127.0.0.1"`
 		Port   int    `yaml:"port" env-default:"5555"`
 	} `yaml:"server"`
-	Storage StorageConfig `yaml:"storage"`
-	Swagger SwaggerConfig `yaml:"swagger"`
+	Storage   StorageConfig `yaml:"storage"`
+	Swagger   SwaggerConfig `yaml:"swagger"`
+	Generator KeyGenerator  `yaml:"generator"`
 }
 
 type StorageConfig struct {
-	Host               string `json:"host"`
-	Port               string `json:"port"`
-	Database           string `json:"database"`
-	Username           string `json:"username"`
-	Password           string `json:"password"`
-	ConnectionAttempts int    `json:"connection_attempts"`
+	Host               string `yaml:"host"`
+	Port               string `yaml:"port"`
+	Database           string `yaml:"database"`
+	Username           string `yaml:"username"`
+	Password           string `yaml:"password"`
+	ConnectionAttempts int    `yaml:"connection_attempts"`
 }
 
 type SwaggerConfig struct {
-	Title    string   `json:"title"`
-	Version  string   `json:"version"`
-	BasePath string   `json:"base-path"`
-	Host     string   `json:"host"`
-	Schemes  []string `json:"schemes"`
+	Title    string   `yaml:"title"`
+	Version  string   `yaml:"version"`
+	BasePath string   `yaml:"base-path"`
+	Host     string   `yaml:"host"`
+	Schemes  []string `yaml:"schemes"`
+}
+
+type KeyGenerator struct {
+	MasterKey string `yaml:"master_key"`
+	BitSize   int    `yaml:"bit_size"`
 }
 
 var instance *Config

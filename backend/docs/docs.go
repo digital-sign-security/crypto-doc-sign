@@ -29,6 +29,17 @@ const docTemplate = `{
                     "docs"
                 ],
                 "summary": "create decrypted doc with signature",
+                "parameters": [
+                    {
+                        "description": "document message creation",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/services.CreateDocumentMessageRequest"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -52,7 +63,7 @@ const docTemplate = `{
             }
         },
         "/docs/available": {
-            "post": {
+            "get": {
                 "description": "get available docs for user",
                 "consumes": [
                     "application/json"
@@ -68,7 +79,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/handlers.AvailableDocumentsResponse"
                         }
                     },
                     "400": {
@@ -112,7 +123,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/handlers.DocumentResponse"
                         }
                     },
                     "400": {
@@ -147,7 +158,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/handlers.KeysResponse"
                         }
                     },
                     "400": {
@@ -178,9 +189,20 @@ const docTemplate = `{
                     "keys"
                 ],
                 "summary": "post your public key in the system",
+                "parameters": [
+                    {
+                        "description": "public key from user",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/services.PublicKeyCreationRequest"
+                        }
+                    }
+                ],
                 "responses": {
-                    "200": {
-                        "description": "OK",
+                    "201": {
+                        "description": "Created",
                         "schema": {
                             "type": "string"
                         }
@@ -202,7 +224,7 @@ const docTemplate = `{
         },
         "/keys/public/{user_id}": {
             "get": {
-                "description": "get user public key bu user_id",
+                "description": "get user public key by user_id",
                 "consumes": [
                     "application/json"
                 ],
@@ -226,7 +248,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/handlers.PublicKeyResponse"
                         }
                     },
                     "400": {
@@ -419,6 +441,73 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "handlers.AvailableDocumentsResponse": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "integer"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/handlers.DocumentItemResponse"
+                    }
+                }
+            }
+        },
+        "handlers.DocumentItemResponse": {
+            "type": "object",
+            "properties": {
+                "Theme": {
+                    "type": "string"
+                },
+                "recipient_id": {
+                    "type": "string"
+                },
+                "sender_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "handlers.DocumentResponse": {
+            "type": "object",
+            "properties": {
+                "Theme": {
+                    "type": "string"
+                },
+                "decrypted_text": {
+                    "type": "string"
+                },
+                "hash": {
+                    "type": "string"
+                },
+                "recipient_id": {
+                    "type": "string"
+                },
+                "sender_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "handlers.KeysResponse": {
+            "type": "object",
+            "properties": {
+                "private_key": {
+                    "type": "string"
+                },
+                "public_key": {
+                    "type": "string"
+                }
+            }
+        },
+        "handlers.PublicKeyResponse": {
+            "type": "object",
+            "properties": {
+                "public_key": {
+                    "type": "string"
+                }
+            }
+        },
         "handlers.UserResponse": {
             "type": "object",
             "properties": {
@@ -469,6 +558,17 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/handlers.UserResponse"
                     }
+                }
+            }
+        },
+        "services.CreateDocumentMessageRequest": {
+            "type": "object"
+        },
+        "services.PublicKeyCreationRequest": {
+            "type": "object",
+            "properties": {
+                "public_key": {
+                    "type": "string"
                 }
             }
         },

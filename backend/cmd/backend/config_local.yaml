@@ -7,7 +7,7 @@ swagger:
   title: "crypto-doc-sign-BE API"
   version: "1.0"
   base-path: "/v1"
-  host: "localhost:5555"
+  host: "127.0.0.1:5555"
   schemes:
     - "http"
     - "https"
@@ -23,3 +23,7 @@ storage:
 logger:
   formatter: json
   out: stdout
+
+generator:
+  master_key: d0v90jsfd0jvs9jfv0f
+  bit_size: 4096

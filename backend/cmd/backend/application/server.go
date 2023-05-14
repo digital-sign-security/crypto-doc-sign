@@ -18,6 +18,7 @@ func (a *App) NewHTTPServer(env *env) *http.Server {
 	mux.Route("/v1", func(r chi.Router) {
 		a.addDocsHandler(env, r)
 		a.addKeysHandler(env, r)
+		a.addUsersHandler(env, r)
 	})
 
 	return &http.Server{
@@ -45,7 +46,7 @@ func (a *App) addKeysHandler(env *env, rg chi.Router) {
 	rg.Route("/keys", func(r chi.Router) {
 		r.Get("/", handler.GetGeneratedKeys)
 
-		r.Post("/public", handler.Post)
+		r.Post("/public", handler.UploadAnotherPublicKey)
 		r.Get("/public/{user_id}", handler.GetUserPublicKey)
 	})
 }

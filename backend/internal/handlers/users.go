@@ -101,8 +101,13 @@ func (h *UsersHandler) GetListOfUsers(w http.ResponseWriter, r *http.Request) {
 // @Router       /users/sign-up [post]
 func (h *UsersHandler) SignUp(w http.ResponseWriter, r *http.Request) {
 	handle := func() (*UserResponse, error) {
-		request := services.SignUpRequest{}
-		user, err := h.service.SignUp(request)
+		var requestBody services.SignUpRequest
+		err := json.NewDecoder(r.Body).Decode(&requestBody)
+		if err != nil {
+			return nil, fmt.Errorf("cannot decode request body: %w", err)
+		}
+
+		user, err := h.service.SignUp(requestBody)
 		if err != nil {
 			return nil, fmt.Errorf("sign up: %w", err)
 		}
@@ -140,8 +145,13 @@ func (h *UsersHandler) SignUp(w http.ResponseWriter, r *http.Request) {
 // @Router       /users/sign-in [post]
 func (h *UsersHandler) SignIn(w http.ResponseWriter, r *http.Request) {
 	handle := func() (*UserResponse, error) {
-		request := services.SignInRequest{}
-		user, err := h.service.SignIn(request)
+		var requestBody services.SignInRequest
+		err := json.NewDecoder(r.Body).Decode(&requestBody)
+		if err != nil {
+			return nil, fmt.Errorf("cannot decode request body: %w", err)
+		}
+
+		user, err := h.service.SignIn(requestBody)
 		if err != nil {
 			return nil, fmt.Errorf("sign in: %w", err)
 		}
@@ -179,8 +189,13 @@ func (h *UsersHandler) SignIn(w http.ResponseWriter, r *http.Request) {
 // @Router       /users/sign-out [post]
 func (h *UsersHandler) SignOut(w http.ResponseWriter, r *http.Request) {
 	handle := func() error {
-		request := services.SignOutRequest{}
-		err := h.service.SignOut(request)
+		var requestBody services.SignOutRequest
+		err := json.NewDecoder(r.Body).Decode(&requestBody)
+		if err != nil {
+			return fmt.Errorf("cannot decode request body: %w", err)
+		}
+
+		err = h.service.SignOut(requestBody)
 		if err != nil {
 			return fmt.Errorf("sign out: %w", err)
 		}

@@ -9,7 +9,7 @@ import (
 )
 
 type DocumentItemResponse struct {
-	Theme           string `json:"Theme"`
+	Theme           string `json:"theme"`
 	SenderUserID    string `json:"sender_id"`
 	RecipientUserID string `json:"recipient_id"`
 }

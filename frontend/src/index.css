@@ -5,11 +5,12 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #d7e7fa;
+  background: rgba(215, 255, 217, 0.6);
 }
 
 main {
   min-height: 90vh;
+  width: 86%;
 }
 
 code {

@@ -10,11 +10,11 @@ definitions:
     type: object
   handlers.DocumentItemResponse:
     properties:
-      Theme:
-        type: string
       recipient_id:
         type: string
       sender_id:
+        type: string
+      theme:
         type: string
     type: object
   handlers.DocumentResponse:
@@ -44,7 +44,7 @@ definitions:
     type: object
   handlers.UserResponse:
     properties:
-      email:
+      public_key:
         type: string
       username:
         type: string
@@ -302,7 +302,7 @@ paths:
       - application/json
       description: user sign in
       parameters:
-      - description: auth params
+      - description: log in params
         in: body
         name: request
         required: true
@@ -332,7 +332,7 @@ paths:
       - application/json
       description: user sign out
       parameters:
-      - description: auth params
+      - description: log out params
         in: body
         name: request
         required: true
@@ -362,7 +362,7 @@ paths:
       - application/json
       description: user sign up
       parameters:
-      - description: auth params
+      - description: create account params
         in: body
         name: request
         required: true

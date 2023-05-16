@@ -1,6 +1,7 @@
 package services
 
 import (
+	"github.com/crypto-sign/internal/clients"
 	"github.com/crypto-sign/internal/domains"
 	"github.com/sirupsen/logrus"
 )
@@ -12,7 +13,7 @@ type DocService struct {
 	logger *logrus.Logger
 }
 
-func NewDocService(logger *logrus.Logger) *DocService {
+func NewDocService(logger *logrus.Logger, client clients.Client) *DocService {
 	return &DocService{
 		logger: logger,
 	}

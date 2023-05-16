@@ -1,6 +1,7 @@
 package services
 
 import (
+	"github.com/crypto-sign/internal/clients"
 	"github.com/crypto-sign/internal/domains"
 	"github.com/crypto-sign/internal/generators"
 	"github.com/sirupsen/logrus"
@@ -15,7 +16,7 @@ type PublicKeyCreationRequest struct {
 	PublicKey string `json:"public_key"`
 }
 
-func NewKeyService(logger *logrus.Logger, keyGenerator *generators.KeysGenerator) *KeyService {
+func NewKeyService(logger *logrus.Logger, client clients.Client, keyGenerator *generators.KeysGenerator) *KeyService {
 	return &KeyService{
 		logger:       logger,
 		keyGenerator: keyGenerator,

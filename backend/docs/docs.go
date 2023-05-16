@@ -316,7 +316,7 @@ const docTemplate = `{
                 "summary": "user sign in",
                 "parameters": [
                     {
-                        "description": "auth params",
+                        "description": "log in params",
                         "name": "request",
                         "in": "body",
                         "required": true,
@@ -362,7 +362,7 @@ const docTemplate = `{
                 "summary": "user sign out",
                 "parameters": [
                     {
-                        "description": "auth params",
+                        "description": "log out params",
                         "name": "request",
                         "in": "body",
                         "required": true,
@@ -408,7 +408,7 @@ const docTemplate = `{
                 "summary": "user sign up",
                 "parameters": [
                     {
-                        "description": "auth params",
+                        "description": "create account params",
                         "name": "request",
                         "in": "body",
                         "required": true,
@@ -458,13 +458,13 @@ const docTemplate = `{
         "handlers.DocumentItemResponse": {
             "type": "object",
             "properties": {
-                "Theme": {
-                    "type": "string"
-                },
                 "recipient_id": {
                     "type": "string"
                 },
                 "sender_id": {
+                    "type": "string"
+                },
+                "theme": {
                     "type": "string"
                 }
             }
@@ -511,7 +511,7 @@ const docTemplate = `{
         "handlers.UserResponse": {
             "type": "object",
             "properties": {
-                "email": {
+                "public_key": {
                     "type": "string"
                 },
                 "username": {

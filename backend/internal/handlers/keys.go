@@ -42,7 +42,7 @@ func NewKeysHandler(service *services.KeyService) *KeysHandler {
 func (h *KeysHandler) GetGeneratedKeys(w http.ResponseWriter, r *http.Request) {
 	handle := func() (*KeysResponse, error) {
 		// TODO get user from jwt_token
-		keys, err := h.service.GetGeneratedKeys()
+		keys, err := h.service.GetGeneratedKeys(r.Context(), "38946d88-3aae-4928-bc62-984ec7543dbb")
 		if err != nil {
 			return nil, fmt.Errorf("get generated keys: %w", err)
 		}
@@ -88,7 +88,7 @@ func (h *KeysHandler) UploadAnotherPublicKey(w http.ResponseWriter, r *http.Requ
 		}
 
 		// TODO get user from jwt_token
-		err = h.service.CreatePublicKey(&p)
+		err = h.service.CreatePublicKey(r.Context(), &p)
 		if err != nil {
 			return fmt.Errorf("create public key: %w", err)
 		}
@@ -121,7 +121,7 @@ func (h *KeysHandler) UploadAnotherPublicKey(w http.ResponseWriter, r *http.Requ
 func (h *KeysHandler) GetUserPublicKey(w http.ResponseWriter, r *http.Request) {
 	handle := func() (*PublicKeyResponse, error) {
 		userID := chi.URLParam(r, "user_id")
-		keys, err := h.service.GetKeysByUserID(userID)
+		keys, err := h.service.GetKeysByUserID(r.Context(), userID)
 		if err != nil {
 			return nil, fmt.Errorf("get keys by user id: %w", err)
 		}

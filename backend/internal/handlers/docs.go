@@ -143,7 +143,7 @@ func (h *DocsHandler) GetAvailable(w http.ResponseWriter, r *http.Request) {
 // @Router       /docs/{doc_id} [get]
 func (h *DocsHandler) Get(w http.ResponseWriter, r *http.Request) {
 	handle := func() (*DocumentResponse, error) {
-		documentID := chi.URLParam(r, "document_id")
+		documentID := chi.URLParam(r, "doc_id")
 		// TODO get user from jwt_token
 		document, err := h.service.GetDocumentByID(r.Context(), documentID)
 		if err != nil {

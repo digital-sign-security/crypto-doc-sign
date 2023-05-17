@@ -304,7 +304,7 @@
                 "summary": "user sign in",
                 "parameters": [
                     {
-                        "description": "auth params",
+                        "description": "log in params",
                         "name": "request",
                         "in": "body",
                         "required": true,
@@ -350,7 +350,7 @@
                 "summary": "user sign out",
                 "parameters": [
                     {
-                        "description": "auth params",
+                        "description": "log out params",
                         "name": "request",
                         "in": "body",
                         "required": true,
@@ -396,7 +396,7 @@
                 "summary": "user sign up",
                 "parameters": [
                     {
-                        "description": "auth params",
+                        "description": "create account params",
                         "name": "request",
                         "in": "body",
                         "required": true,
@@ -446,13 +446,16 @@
         "handlers.DocumentItemResponse": {
             "type": "object",
             "properties": {
-                "Theme": {
+                "id": {
                     "type": "string"
                 },
                 "recipient_id": {
                     "type": "string"
                 },
                 "sender_id": {
+                    "type": "string"
+                },
+                "theme": {
                     "type": "string"
                 }
             }
@@ -467,6 +470,9 @@
                     "type": "string"
                 },
                 "hash": {
+                    "type": "string"
+                },
+                "id": {
                     "type": "string"
                 },
                 "recipient_id": {
@@ -499,7 +505,7 @@
         "handlers.UserResponse": {
             "type": "object",
             "properties": {
-                "email": {
+                "public_key": {
                     "type": "string"
                 },
                 "username": {
@@ -550,7 +556,24 @@
             }
         },
         "services.CreateDocumentMessageRequest": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+                "Theme": {
+                    "type": "string"
+                },
+                "decrypted_text": {
+                    "type": "string"
+                },
+                "hash": {
+                    "type": "string"
+                },
+                "recipient_id": {
+                    "type": "string"
+                },
+                "sender_id": {
+                    "type": "string"
+                }
+            }
         },
         "services.PublicKeyCreationRequest": {
             "type": "object",

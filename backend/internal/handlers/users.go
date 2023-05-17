@@ -12,8 +12,8 @@ type UsersHandler struct {
 }
 
 type UserResponse struct {
-	Username string `json:"username"`
-	Email    string `json:"email"`
+	Username  string `json:"username"`
+	PublicKey string `json:"public_key"`
 }
 
 type UserSignUpResponse struct {
@@ -53,17 +53,17 @@ func NewUsersHandler(service *services.UserService) *UsersHandler {
 // @Router       /users [get]
 func (h *UsersHandler) GetListOfUsers(w http.ResponseWriter, r *http.Request) {
 	handle := func() (*UsersListResponse, error) {
-		users, err := h.service.GetListOfUsers()
+		users, err := h.service.GetListOfUsers(r.Context())
 		if err != nil {
 			return nil, fmt.Errorf("get list of users: %w", err)
 		}
 
-		var items []*UserResponse
+		items := []*UserResponse{}
 
 		for _, item := range users {
 			items = append(items, &UserResponse{
-				Username: item.Username,
-				Email:    item.Email,
+				Username:  item.Username,
+				PublicKey: item.PublicKey,
 			})
 		}
 
@@ -92,7 +92,7 @@ func (h *UsersHandler) GetListOfUsers(w http.ResponseWriter, r *http.Request) {
 // @Tags         users
 // @Accept       json
 // @Produce      json
-// @Param request body services.SignUpRequest true "auth params"
+// @Param request body services.SignUpRequest true "create account params"
 //
 //	@Success      200         {object}  UserSignUpResponse
 //	@Failure      400         {string}  string  "Bad Request"
@@ -100,21 +100,22 @@ func (h *UsersHandler) GetListOfUsers(w http.ResponseWriter, r *http.Request) {
 //
 // @Router       /users/sign-up [post]
 func (h *UsersHandler) SignUp(w http.ResponseWriter, r *http.Request) {
-	handle := func() (*UserResponse, error) {
+	handle := func() (*UserSignUpResponse, error) {
 		var requestBody services.SignUpRequest
 		err := json.NewDecoder(r.Body).Decode(&requestBody)
 		if err != nil {
 			return nil, fmt.Errorf("cannot decode request body: %w", err)
 		}
 
-		user, err := h.service.SignUp(requestBody)
+		user, err := h.service.SignUp(r.Context(), requestBody)
 		if err != nil {
 			return nil, fmt.Errorf("sign up: %w", err)
 		}
 
-		return &UserResponse{
+		return &UserSignUpResponse{
 			Username: user.Username,
 			Email:    user.Email,
+			Token:    "",
 		}, nil
 	}
 
@@ -136,7 +137,7 @@ func (h *UsersHandler) SignUp(w http.ResponseWriter, r *http.Request) {
 // @Tags         users
 // @Accept       json
 // @Produce      json
-// @Param request body services.SignInRequest true "auth params"
+// @Param request body services.SignInRequest true "log in params"
 //
 //	@Success      200         {object}  UserSignInResponse
 //	@Failure      400         {string}  string  "Bad Request"
@@ -144,21 +145,22 @@ func (h *UsersHandler) SignUp(w http.ResponseWriter, r *http.Request) {
 //
 // @Router       /users/sign-in [post]
 func (h *UsersHandler) SignIn(w http.ResponseWriter, r *http.Request) {
-	handle := func() (*UserResponse, error) {
+	handle := func() (*UserSignInResponse, error) {
 		var requestBody services.SignInRequest
 		err := json.NewDecoder(r.Body).Decode(&requestBody)
 		if err != nil {
 			return nil, fmt.Errorf("cannot decode request body: %w", err)
 		}
 
-		user, err := h.service.SignIn(requestBody)
+		user, err := h.service.SignIn(r.Context(), requestBody)
 		if err != nil {
 			return nil, fmt.Errorf("sign in: %w", err)
 		}
 
-		return &UserResponse{
+		return &UserSignInResponse{
 			Username: user.Username,
 			Email:    user.Email,
+			Token:    "",
 		}, nil
 	}
 
@@ -180,7 +182,7 @@ func (h *UsersHandler) SignIn(w http.ResponseWriter, r *http.Request) {
 // @Tags         users
 // @Accept       json
 // @Produce      json
-// @Param request body services.SignOutRequest true "auth params"
+// @Param request body services.SignOutRequest true "log out params"
 //
 //	@Success      200         {string}  string "OK"
 //	@Failure      400         {string}  string  "Bad Request"
@@ -195,7 +197,7 @@ func (h *UsersHandler) SignOut(w http.ResponseWriter, r *http.Request) {
 			return fmt.Errorf("cannot decode request body: %w", err)
 		}
 
-		err = h.service.SignOut(requestBody)
+		err = h.service.SignOut(r.Context(), requestBody)
 		if err != nil {
 			return fmt.Errorf("sign out: %w", err)
 		}

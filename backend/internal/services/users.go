@@ -1,7 +1,9 @@
 package services
 
 import (
+	"context"
 	"fmt"
+	"github.com/crypto-sign/internal/clients"
 	"github.com/crypto-sign/internal/domains"
 	"github.com/crypto-sign/internal/repositories"
 	"github.com/sirupsen/logrus"
@@ -28,22 +30,30 @@ type SignOutRequest struct {
 	JWTToken string
 }
 
-func NewUserService(logger *logrus.Logger) *UserService {
+func NewUserService(logger *logrus.Logger, client clients.Client) *UserService {
+	repo := repositories.NewUserRepository(logger, client)
 	return &UserService{
 		logger: logger,
+		repo:   repo,
 	}
 }
 
-func (u *UserService) GetListOfUsers() ([]*domains.User, error) {
-	users, err := u.repo.GetUsers()
+func (u *UserService) GetListOfUsers(ctx context.Context) ([]*domains.UserWithKey, error) {
+	users, err := u.repo.GetUsers(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("get users: %w", err)
 	}
 	return users, nil
 }
 
-func (u *UserService) SignUp(request SignUpRequest) (*domains.User, error) {
-	user, err := u.repo.CreateUser()
+func (u *UserService) SignUp(ctx context.Context, request SignUpRequest) (*domains.User, error) {
+	userModel := &domains.User{
+		ID:       "",
+		Username: request.Username,
+		Email:    request.Email,
+		Password: request.Password,
+	}
+	user, err := u.repo.CreateUser(ctx, userModel)
 	if err != nil {
 		return nil, fmt.Errorf("create user: %w", err)
 	}
@@ -52,8 +62,8 @@ func (u *UserService) SignUp(request SignUpRequest) (*domains.User, error) {
 	return user, nil
 }
 
-func (u *UserService) SignIn(request SignInRequest) (*domains.User, error) {
-	user, err := u.repo.GetUser()
+func (u *UserService) SignIn(ctx context.Context, request SignInRequest) (*domains.User, error) {
+	user, err := u.repo.GetUser(ctx, request.Username, request.Password)
 	if err != nil {
 		return nil, fmt.Errorf("get user: %w", err)
 	}
@@ -62,8 +72,8 @@ func (u *UserService) SignIn(request SignInRequest) (*domains.User, error) {
 	return user, nil
 }
 
-func (u *UserService) SignOut(request SignOutRequest) error {
-	_, err := u.repo.PatchUser()
+func (u *UserService) SignOut(ctx context.Context, request SignOutRequest) error {
+	_, err := u.repo.PatchUser(ctx)
 	if err != nil {
 		return fmt.Errorf("patch user: %w", err)
 	}

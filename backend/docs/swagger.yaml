@@ -10,11 +10,13 @@ definitions:
     type: object
   handlers.DocumentItemResponse:
     properties:
-      Theme:
+      id:
         type: string
       recipient_id:
         type: string
       sender_id:
+        type: string
+      theme:
         type: string
     type: object
   handlers.DocumentResponse:
@@ -24,6 +26,8 @@ definitions:
       decrypted_text:
         type: string
       hash:
+        type: string
+      id:
         type: string
       recipient_id:
         type: string
@@ -44,7 +48,7 @@ definitions:
     type: object
   handlers.UserResponse:
     properties:
-      email:
+      public_key:
         type: string
       username:
         type: string
@@ -77,6 +81,17 @@ definitions:
         type: array
     type: object
   services.CreateDocumentMessageRequest:
+    properties:
+      Theme:
+        type: string
+      decrypted_text:
+        type: string
+      hash:
+        type: string
+      recipient_id:
+        type: string
+      sender_id:
+        type: string
     type: object
   services.PublicKeyCreationRequest:
     properties:
@@ -302,7 +317,7 @@ paths:
       - application/json
       description: user sign in
       parameters:
-      - description: auth params
+      - description: log in params
         in: body
         name: request
         required: true
@@ -332,7 +347,7 @@ paths:
       - application/json
       description: user sign out
       parameters:
-      - description: auth params
+      - description: log out params
         in: body
         name: request
         required: true
@@ -362,7 +377,7 @@ paths:
       - application/json
       description: user sign up
       parameters:
-      - description: auth params
+      - description: create account params
         in: body
         name: request
         required: true

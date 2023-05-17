@@ -27,16 +27,15 @@ func New(cfg *configuration.Config, logger *logrus.Logger) *App {
 }
 
 func (a *App) Run() error {
-	envStructure := a.constructEnv()
-
-	httpServer := a.NewHTTPServer(envStructure)
-
 	postgresClient, err := clients.NewClient(context.TODO(), a.Config.Storage, a.Logger)
 	if err != nil {
 		a.Logger.Fatal(err)
 		return err
 	}
 	a.Logger.Infof("%v", postgresClient)
+
+	envStructure := a.constructEnv(postgresClient)
+	httpServer := a.NewHTTPServer(envStructure)
 
 	// Server run context
 	serverCtx, serverStopCtx := context.WithCancel(context.Background())
@@ -84,12 +83,12 @@ type env struct {
 	userService *services.UserService
 }
 
-func (a *App) constructEnv() *env {
+func (a *App) constructEnv(client clients.Client) *env {
 	generator := generators.NewKeysGenerator(a.Config.Generator)
 
 	return &env{
-		keyService:  services.NewKeyService(a.Logger, generator),
-		docService:  services.NewDocService(a.Logger),
-		userService: services.NewUserService(a.Logger),
+		keyService:  services.NewKeyService(a.Logger, client, generator),
+		docService:  services.NewDocService(a.Logger, client),
+		userService: services.NewUserService(a.Logger, client),
 	}
 }

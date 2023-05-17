@@ -7,6 +7,12 @@ type User struct {
 	Password string `json:"password"`
 }
 
+type UserWithKey struct {
+	ID        string `json:"-"`
+	Username  string `json:"username"`
+	PublicKey string `json:"public_key"`
+}
+
 type JWTToken struct {
 	ID      string `json:"-"`
 	Token   string `json:"token"`

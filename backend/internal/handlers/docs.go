@@ -9,6 +9,7 @@ import (
 )
 
 type DocumentItemResponse struct {
+	ID              string `json:"id"`
 	Theme           string `json:"theme"`
 	SenderUserID    string `json:"sender_id"`
 	RecipientUserID string `json:"recipient_id"`
@@ -20,6 +21,7 @@ type AvailableDocumentsResponse struct {
 }
 
 type DocumentResponse struct {
+	ID              string `json:"id"`
 	HashDS          string `json:"hash"`
 	Theme           string `json:"Theme"`
 	DecryptedText   string `json:"decrypted_text"`
@@ -60,7 +62,7 @@ func (h *DocsHandler) Create(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// TODO get user from jwt_token
-		err = h.service.CreateDocument(&requestBody)
+		err = h.service.CreateDocument(r.Context(), &requestBody)
 		if err != nil {
 			return fmt.Errorf("create document: %w", err)
 		}
@@ -92,7 +94,7 @@ func (h *DocsHandler) Create(w http.ResponseWriter, r *http.Request) {
 func (h *DocsHandler) GetAvailable(w http.ResponseWriter, r *http.Request) {
 	handle := func() (*AvailableDocumentsResponse, error) {
 		// TODO get user from jwt_token
-		documents, err := h.service.GetAvailableDocumentsForUser()
+		documents, err := h.service.GetAvailableDocumentsForUser(r.Context(), "cfd376ee-1971-45c6-809d-ecf6e9c22c80")
 		if err != nil {
 			return nil, fmt.Errorf("get available documents for user: %w", err)
 		}
@@ -101,6 +103,7 @@ func (h *DocsHandler) GetAvailable(w http.ResponseWriter, r *http.Request) {
 
 		for _, item := range documents {
 			items = append(items, &DocumentItemResponse{
+				ID:              item.ID,
 				Theme:           item.Theme,
 				SenderUserID:    item.SenderUserID,
 				RecipientUserID: item.RecipientUserID,
@@ -142,13 +145,14 @@ func (h *DocsHandler) Get(w http.ResponseWriter, r *http.Request) {
 	handle := func() (*DocumentResponse, error) {
 		documentID := chi.URLParam(r, "document_id")
 		// TODO get user from jwt_token
-		document, err := h.service.GetDocumentByID(documentID)
+		document, err := h.service.GetDocumentByID(r.Context(), documentID)
 		if err != nil {
 			return nil, fmt.Errorf("get document by id: %w", err)
 		}
 		_ = document
 
 		return &DocumentResponse{
+			ID:              documentID,
 			HashDS:          document.HashDS,
 			DecryptedText:   document.DecryptedText,
 			Theme:           document.Theme,

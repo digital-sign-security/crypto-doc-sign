@@ -458,6 +458,9 @@ const docTemplate = `{
         "handlers.DocumentItemResponse": {
             "type": "object",
             "properties": {
+                "id": {
+                    "type": "string"
+                },
                 "recipient_id": {
                     "type": "string"
                 },
@@ -479,6 +482,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "hash": {
+                    "type": "string"
+                },
+                "id": {
                     "type": "string"
                 },
                 "recipient_id": {
@@ -562,7 +568,24 @@ const docTemplate = `{
             }
         },
         "services.CreateDocumentMessageRequest": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+                "Theme": {
+                    "type": "string"
+                },
+                "decrypted_text": {
+                    "type": "string"
+                },
+                "hash": {
+                    "type": "string"
+                },
+                "recipient_id": {
+                    "type": "string"
+                },
+                "sender_id": {
+                    "type": "string"
+                }
+            }
         },
         "services.PublicKeyCreationRequest": {
             "type": "object",

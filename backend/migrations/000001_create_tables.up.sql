@@ -26,6 +26,7 @@ CREATE TABLE public.docs(
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     hash_ds TEXT NOT NULL,
     decrypted_text TEXT NOT NULL,
+    theme TEXT NOT NULL,
     sender_user_id UUID NOT NULL,
     recipient_user_id UUID NOT NULL,
     CONSTRAINT sender_user_fk FOREIGN KEY (sender_user_id) REFERENCES public.user(id),

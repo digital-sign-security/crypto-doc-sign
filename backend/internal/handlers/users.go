@@ -58,7 +58,7 @@ func (h *UsersHandler) GetListOfUsers(w http.ResponseWriter, r *http.Request) {
 			return nil, fmt.Errorf("get list of users: %w", err)
 		}
 
-		var items []*UserResponse
+		items := []*UserResponse{}
 
 		for _, item := range users {
 			items = append(items, &UserResponse{

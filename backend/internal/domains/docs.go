@@ -1,7 +1,7 @@
 package domains
 
 type Doc struct {
-	ID              string `json:"-"`
+	ID              string `json:"id"`
 	HashDS          string `json:"hash"`
 	Theme           string `json:"Theme"`
 	DecryptedText   string `json:"decrypted_text"`

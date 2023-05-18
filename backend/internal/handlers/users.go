@@ -115,7 +115,7 @@ func (h *UsersHandler) SignUp(w http.ResponseWriter, r *http.Request) {
 		return &UserSignUpResponse{
 			Username: user.Username,
 			Email:    user.Email,
-			Token:    "",
+			Token:    user.Token,
 		}, nil
 	}
 
@@ -160,7 +160,7 @@ func (h *UsersHandler) SignIn(w http.ResponseWriter, r *http.Request) {
 		return &UserSignInResponse{
 			Username: user.Username,
 			Email:    user.Email,
-			Token:    "",
+			Token:    user.Token,
 		}, nil
 	}
 

@@ -84,7 +84,7 @@ func (u *UserRepository) CreateUser(ctx context.Context, user *domains.User) (*d
 		RETURNING id
 	`
 	u.logger.Infof("SQL Query: %s", formatQuery(q))
-	if err := u.client.QueryRow(ctx, q, user.Username, user.Email, user.Username).Scan(&user.ID); err != nil {
+	if err := u.client.QueryRow(ctx, q, user.Username, user.Email, user.Password).Scan(&user.ID); err != nil {
 		var pgErr *pgconn.PgError
 		if errors.As(err, &pgErr) {
 			pgErr = err.(*pgconn.PgError)
@@ -101,4 +101,27 @@ func (u *UserRepository) CreateUser(ctx context.Context, user *domains.User) (*d
 func (u *UserRepository) PatchUser(ctx context.Context) (*domains.User, error) {
 	// TODO: make patch
 	return nil, nil
+}
+
+func (u *UserRepository) CreateToken(ctx context.Context, token string, user *domains.User) (*domains.User, error) {
+	q := `
+		INSERT INTO public.jwttoken 
+		    (token, is_alive, user_id) 
+		VALUES 
+			($1, $2, $3) 
+		RETURNING token
+	`
+	u.logger.Infof("SQL Query: %s", formatQuery(q))
+	if err := u.client.QueryRow(ctx, q, token, true, user.ID).Scan(&user.Token); err != nil {
+		var pgErr *pgconn.PgError
+		if errors.As(err, &pgErr) {
+			pgErr = err.(*pgconn.PgError)
+			newErr := fmt.Errorf("SQL Error: %s, Detail: %s, Where: %s, Code: %s, SQLState: %s", pgErr.Message, pgErr.Detail, pgErr.Where, pgErr.Code, pgErr.SQLState())
+			u.logger.Error(newErr)
+			return nil, newErr
+		}
+		return nil, fmt.Errorf("cannot insert query: %w", err)
+	}
+
+	return user, nil
 }

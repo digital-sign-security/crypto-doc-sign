@@ -7,7 +7,7 @@ CREATE TABLE public.user(
 
 CREATE TABLE public.jwttoken(
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    token VARCHAR(128) UNIQUE NOT NULL,
+    token TEXT UNIQUE NOT NULL,
     is_alive BOOLEAN NOT NULL DEFAULT false,
     user_id UUID NOT NULL,
     CONSTRAINT user_fk FOREIGN KEY (user_id) REFERENCES public.user(id)
